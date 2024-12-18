@@ -1,12 +1,14 @@
 <script lang="ts">
     import { displayWeightUnit } from "../../types";
-    import { COMMANDS, DEFAULT } from "../../constants";
+    import { COMMANDS } from "../../constants";
     import { invoke } from "@tauri-apps/api/core";
 
-    let weight = $state(0);
-    let reps = $state(0);
+    const { data } = $props();
+
+    let weight = $state(data.weight);
+    let reps = $state(data.reps);
     let oneRM = $state(0);
-    const weightUnit = DEFAULT.WEIGHT_UNIT;
+    const weightUnit = data.weightUnit;
 
     const calc = async () => {
       const request = { weight, reps }

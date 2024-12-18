@@ -1,8 +1,8 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
   import { COMMANDS } from "../constants";
-  import {type CalcResponse, displayWeightUnit, type PlateCount, WeightUnit} from "../types";
-  import { warn, debug, trace, info, error } from '@tauri-apps/plugin-log';
+  import {type CalcResponse, displayWeightUnit, type PlateCount } from "../types";
+  import { error } from '@tauri-apps/plugin-log';
 
   const { data } = $props();
 
