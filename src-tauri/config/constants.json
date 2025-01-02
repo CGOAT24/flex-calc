@@ -1,0 +1,22 @@
+{
+  "store": "data.json",
+  "commands": {
+    "CALC_WEIGHTS": "calc_weights",
+    "ONE_RM": "one_rm"
+  },
+  "data": {
+    "TOTAL_WEIGHT": "total_weight",
+    "BAR_WEIGHT": "bar_weight",
+    "WEIGHT_UNIT": "weight_unit",
+    "ONE_RM_WEIGHT": "1rm_weight",
+    "ONE_RM_REPS": "1rm_reps"
+  },
+  "default": {
+    "TOTAL_WEIGHT": 0,
+    "BAR_WEIGHT": 45,
+    "WEIGHT_UNIT": "Lb"
+  },
+  "settings": {
+    "preferred_weight_unit": "settings_preferred_weight_unit"
+  }
+}

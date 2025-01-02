@@ -1,17 +1,20 @@
-use crate::models::{CalcRequest, CalcResponse, PlateCount, WeightUnit};
 use crate::AppState;
 use std::collections::HashMap;
 use tauri::State;
-use tauri_plugin_store::JsonValue;
+use crate::models::requests::CalcRequest;
+use crate::models::responses::{CalcResponse, PlateCount};
+use crate::models::settings::Settings;
+use crate::models::units::WeightUnit;
 
 #[tauri::command]
 pub fn calc_weights(request: CalcRequest, state: State<AppState>) -> Result<CalcResponse, String> {
+    let plates = [45.0, 35.0, 25.0, 10.0, 5.0, 2.5];
+
     let mut remaining_weight = request.total_weight - request.bar_weight;
-    let plates = vec![45.0, 35.0, 25.0, 10.0, 5.0, 2.5];
     let mut plates_needed: HashMap<String, usize> = HashMap::new();
 
-    state.store.set("total_weight", request.total_weight);
-    state.store.set("bar_weight", request.bar_weight);
+    state.store.set(state.constants.data.total_weight.to_string(), request.total_weight);
+    state.store.set(state.constants.data.bar_weight.to_string(), request.bar_weight);
 
     let mut plate_index = 0;
     while remaining_weight > 0.0 {
@@ -41,7 +44,12 @@ pub fn calc_weights(request: CalcRequest, state: State<AppState>) -> Result<Calc
 
 #[tauri::command]
 pub fn calc_one_rm(weight: f64, reps: usize, state: State<AppState>) -> f64 {
-    state.store.set("1rm_weight", weight);
-    state.store.set("1rm_reps", reps);
+    state.store.set(state.constants.data.one_rm_weight.to_string(), weight);
+    state.store.set(state.constants.data.one_rm_reps.to_string(), reps);
     weight * (1.0 + (reps as f64 / 30.0))
+}
+
+#[tauri::command]
+pub fn save_settings(settings: Settings, state: State<AppState>) {
+    todo!()
 }
