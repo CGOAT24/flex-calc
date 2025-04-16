@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import "../app.css";
+
     const { children } = $props();
 
     let currentRoute: string | null = $state(null);

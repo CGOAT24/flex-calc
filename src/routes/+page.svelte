@@ -1,7 +1,7 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
   import { COMMANDS } from "../constants";
-  import {type CalcResponse, displayWeightUnit, type PlateCount } from "../types";
+  import {type CalcResponse, displayWeightUnit, type PlateCount, weightUnitToEnum} from "../types";
   import { error } from '@tauri-apps/plugin-log';
 
   const { data } = $props();
@@ -17,13 +17,13 @@
     errorMessage = undefined;
     if (totalWeight > 0) {
       try {
-        const request = { total_weight: totalWeight, bar_weight: barWeight, unit: weightUnit };
+        const request = { total_weight: totalWeight, bar_weight: barWeight, unit: weightUnitToEnum(weightUnit) };
         const response: CalcResponse = await invoke(COMMANDS.CALC_WEIGHTS, { request });
         result = response.plates.toSorted((x, y) => y.weight - x.weight);
       }
       catch (err) {
-        await error(err + "");
-        errorMessage = err + "";
+        errorMessage = String(err);
+        await error(errorMessage);
         result = [];
       }
     }

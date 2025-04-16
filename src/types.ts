@@ -4,13 +4,15 @@ export const WeightUnit = {
 };
 
 export const displayWeightUnit = (unit: string, value: number = 2) => {
-	switch (unit) {
-		case WeightUnit.Kg:
+	switch (unit.toLowerCase()) {
+		case "kg":
 			return value >= 2 ? "kgs" : "kg";
-		case WeightUnit.Lb:
+		case "lb":
 			return value >= 2 ? "lbs" : "lb";
 	}
 }
+
+export const weightUnitToEnum = (unit: string) => `${unit[0].toUpperCase()}${unit.slice(1)}`;
 
 export interface PlateCount {
 		weight: number;

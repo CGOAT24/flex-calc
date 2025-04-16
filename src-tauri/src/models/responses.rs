@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
-use crate::models::units::WeightUnit;
+use crate::models::requests::WeightUnit;
 
-#[derive(Deserialize, Serialize, Debug)]
+#[derive(Deserialize, Serialize)]
 pub struct CalcResponse {
     pub plates: Vec<PlateCount>,
     pub unit: WeightUnit,
@@ -14,13 +14,13 @@ pub struct PlateCount {
 }
 
 impl CalcResponse {
-    pub fn new(plates: Vec<PlateCount>, unit: WeightUnit) -> Self {
+    pub(crate) fn new(plates: Vec<PlateCount>, unit: WeightUnit) -> Self {
         CalcResponse { plates, unit }
     }
 }
 
 impl PlateCount {
-    pub fn new(weight: String, count: usize) -> Self {
+    pub(crate) fn new(weight: String, count: usize) -> Self {
         PlateCount { weight, count }
     }
 }

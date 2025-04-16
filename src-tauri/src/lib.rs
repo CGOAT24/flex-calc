@@ -1,4 +1,4 @@
-use crate::commands::{calc_one_rm, calc_weights, save_settings};
+use crate::commands::{calc_one_rm, calc_weights, change_weight_unit};
 use std::sync::Arc;
 use tauri::{Manager, Wry};
 use tauri::path::BaseDirectory;
@@ -29,7 +29,7 @@ pub fn run() {
             Ok(())
         })
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![calc_weights, calc_one_rm, save_settings])
+        .invoke_handler(tauri::generate_handler![calc_weights, calc_one_rm, change_weight_unit])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -11,7 +11,7 @@
     const weightUnit = data.weightUnit;
 
     const calc = async () => {
-      const request = { weight, reps }
+      const request = { weight, reps };
       oneRM = +((await invoke(COMMANDS.ONE_RM, request)) as number).toFixed(1);
     }
 </script>

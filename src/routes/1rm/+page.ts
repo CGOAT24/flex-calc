@@ -1,5 +1,5 @@
 import { LazyStore } from "@tauri-apps/plugin-store";
-import { DATA, DEFAULT, STORE, WEIGHTS } from "../../constants";
+import { DATA, DEFAULT, STORE } from "../../constants";
 
 export const load = async () => {
 	const store = new LazyStore(STORE);
