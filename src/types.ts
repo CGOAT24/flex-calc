@@ -29,3 +29,15 @@ export interface CalcResponse {
 	unit: string;
 	plates: PlateCount[];
 }
+
+export interface PlateSetting {
+	weight_unit: string;
+	weight: number,
+	enabled: boolean;
+}
+
+export interface Setting {
+	weight_unit: string;
+	plates: PlateSetting[]
+
+}

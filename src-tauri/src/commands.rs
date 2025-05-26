@@ -1,39 +1,32 @@
-use crate::AppState;
-use std::collections::HashMap;
-use std::str::FromStr;
-use serde_json::Value;
-use tauri::State;
 use crate::models::requests::{CalcRequest, WeightUnit};
 use crate::models::responses::{CalcResponse, PlateCount};
+use crate::AppState;
+use std::collections::HashMap;
+use serde_json::{from_value, to_value};
+use tauri::State;
+use crate::models::setting::Setting;
 
 #[tauri::command]
 pub fn calc_weights(request: CalcRequest, state: State<AppState>) -> Result<CalcResponse, String> {
-    let setting = state.store.get(&state.constants.data.weight_unit);
+    let weight_unit: WeightUnit = get_settings(state.clone()).weight_unit;
 
-    let weight_unit: WeightUnit = match setting {
-        None => state.constants.default.weight_unit.clone(),
-        Some(value) => {
-            let def = state.constants.default.weight_unit.clone();
-            if let Value::String(v) = value {
-                WeightUnit::from_str(&v).unwrap_or(def)
-            } else {
-                def
-            }
-        }
-    };
-    
     let plates = if weight_unit == WeightUnit::Lb {
         [45.0, 35.0, 25.0, 10.0, 5.0, 2.5]
-    }
-    else {
+    } else {
         [20.0, 15.0, 10.0, 5.0, 2.5, 1.25]
     };
 
     let mut remaining_weight = request.total_weight - request.bar_weight;
     let mut plates_needed: HashMap<String, usize> = HashMap::new();
 
-    state.store.set(state.constants.data.total_weight.to_string(), request.total_weight);
-    state.store.set(state.constants.data.bar_weight.to_string(), request.bar_weight);
+    state.store.set(
+        "total_weight",
+        request.total_weight,
+    );
+    state.store.set(
+        "bar_weight",
+        request.bar_weight,
+    );
 
     let mut plate_index = 0;
     while remaining_weight > 0.0 {
@@ -63,13 +56,39 @@ pub fn calc_weights(request: CalcRequest, state: State<AppState>) -> Result<Calc
 
 #[tauri::command]
 pub fn calc_one_rm(weight: f64, reps: usize, state: State<AppState>) -> f64 {
-    state.store.set(state.constants.data.one_rm_weight.to_string(), weight);
-    state.store.set(state.constants.data.one_rm_reps.to_string(), reps);
+    state
+        .store
+        .set("1rm_weight", weight);
+    state
+        .store
+        .set("1rm_reps", reps);
     weight * (1.0 + (reps as f64 / 30.0))
 }
 
 #[tauri::command]
 pub fn change_weight_unit(unit: WeightUnit, state: State<AppState>) -> WeightUnit {
-    state.store.set(state.constants.data.weight_unit.to_string(), unit.to_string());
-    unit
+    let mut setting: Setting = get_settings(state.clone());
+    setting.weight_unit = unit;
+    state.store.set(
+        "setting",
+        to_value(setting.clone()).unwrap(),
+    );
+    setting.weight_unit
+}
+
+#[tauri::command]
+pub fn get_settings(state: State<AppState>) -> Setting {
+    if let Some(val) = state.store.get("setting") {
+        let mut setting: Setting = from_value(val).unwrap();
+        if setting.plates.len() == 0 {
+            setting = Setting::default();
+            state.store.set("setting", to_value(setting.clone()).unwrap());
+        }
+        setting
+    }
+    else {
+        let setting = Setting::default();
+        state.store.set("setting", to_value(setting.clone()).unwrap());
+        setting
+    }
 }
