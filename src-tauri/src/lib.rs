@@ -1,4 +1,4 @@
-use crate::commands::{calc_one_rm, calc_weights, change_weight_unit, get_settings};
+use crate::commands::{calc_one_rm, calc_weights, change_weight_unit, get_settings, update_settings};
 use std::sync::Arc;
 use tauri::{Manager, Wry};
 use tauri_plugin_store::{Store, StoreExt};
@@ -28,7 +28,8 @@ pub fn run() {
             calc_weights,
             calc_one_rm,
             change_weight_unit,
-            get_settings
+            get_settings,
+            update_settings
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

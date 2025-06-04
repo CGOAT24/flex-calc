@@ -3,6 +3,7 @@
   import { COMMANDS } from "../constants";
   import {type CalcResponse, displayWeightUnit, type PlateCount, weightUnitToEnum} from "../types";
   import { error } from '@tauri-apps/plugin-log';
+  import Barbell from "../component/Barbell/Barbell.svelte";
 
   const { data } = $props();
 
@@ -33,7 +34,7 @@
   }
 </script>
 <div class="w-full flex flex-col justify-center items-center my-3">
-  <h1 class="mb-3 font-bold">Plates Calculator</h1>
+  <h1 class="mb-3 font-bold">Weight to plates</h1>
   <div class="w-11/12">
     <h2>Weight:</h2>
     <label class="input input-bordered input-lg flex items-center justify-between w-full">
@@ -51,22 +52,8 @@
   <button onclick={calc} class="btn btn-primary w-11/12 mt-2">Calculate</button>
 </div>
 {#if result.length > 0}
-  <table class="table flex flex-col justify-center items-center w-11/12">
-    <thead>
-    <tr>
-      <th>Weight ({displayWeightUnit(weightUnit)})</th>
-      <th>Count</th>
-    </tr>
-    </thead>
-    <tbody>
-    {#each result as plate}
-      <tr>
-        <td>{plate.weight}</td>
-        <td>{plate.count}</td>
-      </tr>
-    {/each}
-    </tbody>
-  </table>
+  {@const plates = result.flatMap(x => Array(x.count / 2).fill(Number(x.weight)))}
+  <Barbell {plates} unit={weightUnit}/>
 {:else if errorMessage}
   {errorMessage}
 {/if}

@@ -19,8 +19,8 @@
 		weightUnit = response.toLowerCase();
 	};
 
-	const togglePlate = async (plate: PlateSetting) => {
-		//TODO
+	const togglePlate = async (event) => {
+
 	}
 </script>
 {#await fetch()}
@@ -39,21 +39,23 @@
 			<div class="divider divider-start">Available plates</div>
 			<div class="flex flex-row justify-around">
 				<div>
-					{#each weights.filter(x => x.weight_unit === "Lb") as plate}
+					{#each weights as plate, i}
 						<div>
-							<input type="checkbox" name={plate.weight+plate.weight_unit} checked={plate.enabled} onchange={() => togglePlate(plate)}>
+							<input type="checkbox" name={plate.weight+plate.weight_unit} bind:checked={weights[i].enabled} onchange={togglePlate}>
 							<label for={plate.weight+plate.weight_unit}>{plate.weight}{displayWeightUnit(plate.weight_unit, plate.weight)}</label>
 						</div>
 					{/each}
 				</div>
+				<!--
 				<div>
 					{#each weights.filter(x => x.weight_unit === "Kg") as plate}
 						<div>
-							<input type="checkbox" name={plate.weight+plate.weight_unit} checked={plate.enabled} onchange={() => togglePlate(plate)}>
+							<input type="checkbox" name={plate.weight+plate.weight_unit} bind:checked={plate.enabled} onchange={() => togglePlate(plate)}>
 							<label for={plate.weight+plate.weight_unit}>{plate.weight}{displayWeightUnit(plate.weight_unit, plate.weight)}</label>
 						</div>
 					{/each}
 				</div>
+				-->
 			</div>
 			<div class="self-start">
 

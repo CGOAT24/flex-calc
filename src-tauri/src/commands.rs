@@ -92,3 +92,9 @@ pub fn get_settings(state: State<AppState>) -> Setting {
         setting
     }
 }
+
+#[tauri::command]
+pub fn update_settings(setting: Setting, state: State<AppState>) -> Setting {
+    state.store.set("setting", to_value(setting.clone()).unwrap());
+    setting
+}
