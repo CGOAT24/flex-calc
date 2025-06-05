@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "flexcalc",
+  "productName": "FlexCalc",
   "version": "0.1.0",
   "identifier": "com.flexcalc.app",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "flexcalc",
+        "title": "FlexCalc",
         "width": 800,
         "height": 600
       }
