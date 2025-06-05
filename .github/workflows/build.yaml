@@ -18,6 +18,9 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install deps
+        run: bun install
+
       - name: Build
         run: bun run tauri build
   build-android:
@@ -30,6 +33,9 @@ jobs:
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+
+      - name: Install deps
+        run: bun install
 
       - name: Build
         run: bun run tauri android build
