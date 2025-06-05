@@ -8,13 +8,10 @@ use crate::models::setting::Setting;
 
 #[tauri::command]
 pub fn calc_weights(request: CalcRequest, state: State<AppState>) -> Result<CalcResponse, String> {
-    let weight_unit: WeightUnit = get_settings(state.clone()).weight_unit;
-
-    let plates = if weight_unit == WeightUnit::Lb {
-        [45.0, 35.0, 25.0, 10.0, 5.0, 2.5]
-    } else {
-        [20.0, 15.0, 10.0, 5.0, 2.5, 1.25]
-    };
+    let setting = get_settings(state.clone());
+    let weight_unit: WeightUnit = setting.weight_unit;
+    let mut plates: Vec<f64> = setting.plates.iter().filter(|x| x.weight_unit == weight_unit && x.enabled).map(|x| x.weight).collect();
+    plates.sort_by(|a, b| b.partial_cmp(a).unwrap());
 
     let mut remaining_weight = request.total_weight - request.bar_weight;
     let mut plates_needed: HashMap<String, usize> = HashMap::new();
@@ -94,7 +91,11 @@ pub fn get_settings(state: State<AppState>) -> Setting {
 }
 
 #[tauri::command]
-pub fn update_settings(setting: Setting, state: State<AppState>) -> Setting {
+pub fn update_settings(weight: f64, state: State<AppState>) -> Setting {
+    let mut setting: Setting = get_settings(state.clone());
+    if let Some(val) = setting.plates.iter_mut().find(|item| item.weight == weight && item.weight_unit == setting.weight_unit) {
+        val.enabled = !val.enabled;
+    }
     state.store.set("setting", to_value(setting.clone()).unwrap());
     setting
 }

@@ -1,21 +1,27 @@
 <script lang="ts">
-    import { displayWeightUnit } from "../../types";
+  import {displayWeightUnit, type Setting} from "../../types";
     import { COMMANDS } from "../../constants";
     import { invoke } from "@tauri-apps/api/core";
-
     const { data } = $props();
 
     let weight = $state(data.weight);
     let reps = $state(data.reps);
     let oneRM = $state(0);
-    const weightUnit = data.weightUnit;
+    let weightUnit = $state(data.weightUnit);
 
     const calc = async () => {
       const request = { weight, reps };
       oneRM = +((await invoke(COMMANDS.ONE_RM, request)) as number).toFixed(1);
     }
-</script>
 
+    const fetch = async () => {
+      const setting: Setting = await invoke(COMMANDS.GET_SETTINGS);
+      weightUnit = setting.weight_unit;
+    }
+</script>
+{#await fetch()}
+    Loading...
+{:then _}
 <div class="w-full flex flex-col justify-center items-center my-3">
     <h1 class="mb-3 font-bold">1RM Calculator</h1>
     <label class="input input-bordered input-lg flex items-center justify-between w-11/12">
@@ -33,3 +39,4 @@
         {/if}
     </div>
 </div>
+{/await}

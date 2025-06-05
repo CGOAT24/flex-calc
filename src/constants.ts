@@ -4,7 +4,8 @@ export const COMMANDS = {
 	CALC_WEIGHTS: "calc_weights",
 	ONE_RM: "calc_one_rm",
 	CHANGE_WEIGHT_UNIT: "change_weight_unit",
-	GET_SETTINGS: "get_settings"
+	GET_SETTINGS: "get_settings",
+	UPDATE_SETTINGS: "update_settings",
 };
 
 export const DATA = {
