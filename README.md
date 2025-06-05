@@ -19,7 +19,7 @@
 
 * Plates calculator: Load your bar like a pro — no more guesswork, just gains.
 * One rep max calculator: Unlock your true strength — know exactly what you're capable of.
-* Customizable settings: Wether it's kilograms or pounds, we've got you covered.
+* Customizable settings: Whether it's kilograms or pounds, we've got you covered.
 
 ## How To Use
 
